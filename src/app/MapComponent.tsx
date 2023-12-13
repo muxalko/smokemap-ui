@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
-import Map, { Source, Layer } from "react-map-gl/maplibre";
+import { Map, Source, Layer } from "react-map-gl/maplibre";
+import type {MapRef} from 'react-map-gl';
 
 export default function MapComponent() {
   // initial coordinates and zoom
@@ -14,7 +15,10 @@ export default function MapComponent() {
   // I assume that 'maplibregl' type Map is the same as 'react-map-gl/maplibre' Map component ref={mapRef}
   // This is where I try to declare my mapRef following answer 
   // from here https://stackoverflow.com/questions/68368898/typescript-type-for-mapboxgljs-react-ref-hook
-  const mapRef = useRef<maplibregl.Map | null>(null);
+  // const mapRef = useRef<maplibregl.Map | null>(null);
+  // 
+  // trying other approach, still same error, but now it is clear that those methods do not exist from intellisense
+  const mapRef = useRef<MapRef>(null);
 
   const [viewport, setViewport] = useState({
     latitude: lat,
@@ -33,7 +37,7 @@ export default function MapComponent() {
     }
   }, []);
 
-  const flyToCoordinates = useCallback((longitude, latitude) => {
+  const flyToCoordinates = useCallback((longitude: number, latitude: number) => {
     mapRef.current?.flyTo({
       center: [longitude, latitude],
       duration: 2000,
