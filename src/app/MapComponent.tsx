@@ -6,8 +6,7 @@ export default function MapComponent() {
   // initial coordinates and zoom
   const lon = -94.54098998290928;
   const lat = 15.475171581011853;
-  const initialZoom = 5;
-  const flyToZoomLevel = 7;
+  const initialZoom = 8;
   const sourceId = "places";
   const circleLayerId = "circles";
   const symbolLayerId = "symbols";
@@ -38,7 +37,7 @@ export default function MapComponent() {
     mapRef.current?.flyTo({
       center: [longitude, latitude],
       duration: 2000,
-      zoom: flyToZoomLevel,
+      zoom: initialZoom,
     });
   }, []);
 
@@ -171,6 +170,8 @@ export default function MapComponent() {
         style={{ width: "100vw", height: "100vh", display: "flex" }}
         mapStyle={
           "https://api.maptiler.com/maps/basic-v2/style.json?key=zUpp6oZWatSi4rP4q5Cs"
+          // for some reason, the same layers that shows normaly with the above style, do not show up with demotiles 
+          // "https://demotiles.maplibre.org/style.json"
         }
         // disable map rotation using right click + drag
         dragRotate={false}
