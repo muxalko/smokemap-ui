@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
 import { Map, Source, Layer } from "react-map-gl/maplibre";
-import type {MapRef} from 'react-map-gl';
+import type { MapRef } from "react-map-gl";
 
 export default function MapComponent() {
   // initial coordinates and zoom
@@ -11,12 +11,14 @@ export default function MapComponent() {
   const sourceId = "places";
   const circleLayerId = "circles";
   const symbolLayerId = "symbols";
+  const visibility = "visibility";
+  const circleRadius = "circle-radius";
   // I suspect that this is where I am presumably wrong.
   // I assume that 'maplibregl' type Map is the same as 'react-map-gl/maplibre' Map component ref={mapRef}
-  // This is where I try to declare my mapRef following answer 
+  // This is where I try to declare my mapRef following answer
   // from here https://stackoverflow.com/questions/68368898/typescript-type-for-mapboxgljs-react-ref-hook
   // const mapRef = useRef<maplibregl.Map | null>(null);
-  // 
+  //
   // trying other approach, still same error, but now it is clear that those methods do not exist from intellisense
   const mapRef = useRef<MapRef>(null);
 
@@ -37,20 +39,23 @@ export default function MapComponent() {
     }
   }, []);
 
-  const flyToCoordinates = useCallback((longitude: number, latitude: number) => {
-    mapRef.current?.flyTo({
-      center: [longitude, latitude],
-      duration: 2000,
-      zoom: initialZoom,
-    });
-  }, []);
+  const flyToCoordinates = useCallback(
+    (longitude: number, latitude: number) => {
+      mapRef.current?.flyTo({
+        center: [longitude, latitude],
+        duration: 2000,
+        zoom: initialZoom,
+      });
+    },
+    []
+  );
 
   const handleVisibility = (layer_id: string, checked: boolean) => {
     console.log(
       'Trying to read layout visibility with getLayoutProperty("' +
         layer_id +
         '", "visibility"):',
-      mapRef.current?.getLayoutProperty(layer_id, "visibility")
+      mapRef.current?.getLayoutProperty(layer_id, visibility)
     );
 
     // fails with method not defined
@@ -58,7 +63,7 @@ export default function MapComponent() {
     //fails with method not defined
     mapRef.current?.setLayoutProperty(
       layer_id,
-      "visibility",
+      visibility,
       checked ? "visible" : "none"
     );
   };
@@ -68,11 +73,11 @@ export default function MapComponent() {
       'Trying to read "circle-radius" with getLayoutProperty("' +
         layer_id +
         '", "circle-radius"):',
-      mapRef.current?.getPaintProperty(layer_id, "circle-radius")
+      mapRef.current?.getPaintProperty(layer_id, circleRadius)
     );
 
     // fails with method not defined
-    mapRef.current?.setPaintProperty(layer_id, "circle-radius", radius);
+    mapRef.current?.setPaintProperty(layer_id, circleRadius, radius);
   };
 
   return (
@@ -134,7 +139,7 @@ export default function MapComponent() {
               </button>
             </span>
           </li>
-          <br/>
+          <br />
           <li>
             <span>
               <button
@@ -174,7 +179,7 @@ export default function MapComponent() {
         style={{ width: "100vw", height: "100vh", display: "flex" }}
         mapStyle={
           "https://api.maptiler.com/maps/basic-v2/style.json?key=zUpp6oZWatSi4rP4q5Cs"
-          // for some reason, the same layers that shows normaly with the above style, do not show up with demotiles 
+          // for some reason, the same layers that shows normaly with the above style, do not show up with demotiles
           // "https://demotiles.maplibre.org/style.json"
         }
         // disable map rotation using right click + drag
