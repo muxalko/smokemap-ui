@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
-import { Map, Source, Layer } from "react-map-gl/maplibre";
-import type { MapRef } from "react-map-gl";
+import { Map, Source, Layer, type MapRef} from "react-map-gl/maplibre";
 
 export default function MapComponent() {
   // initial coordinates and zoom
