@@ -2420,10 +2420,10 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
-typescript@5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.2.tgz#891e1a90c5189d8506af64b9ef929fca99ba1ee5"
-  integrity sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==
+typescript@^5.4.0-dev.20231213:
+  version "5.4.0-dev.20231213"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.0-dev.20231213.tgz#1f224d92c62cfc1d184d7d3a45003a915fcf0173"
+  integrity sha512-Djk7lYdNtrxX60s6h4kvV27+K6qjqJIWvhQEIGqI++nN0Abq4imuBPTd27DzhOQnGjUH3lD9lYAfiHvb+jATxQ==
 
 typewise-core@^1.2, typewise-core@^1.2.0:
   version "1.2.0"
