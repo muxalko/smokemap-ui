@@ -1,17 +1,21 @@
 "use client";
 import { useCallback, useRef, useState } from "react";
-import { Map, Source, Layer, type MapRef} from "react-map-gl/maplibre";
+import { Map, Source, Layer, type MapRef } from "react-map-gl/maplibre";
 
 export default function MapComponent() {
   // initial coordinates and zoom
   const lon = -94.54098998290928;
   const lat = 15.475171581011853;
   const initialZoom = 8;
+  // layer ids
   const sourceId = "places";
   const circleLayerId = "circles";
   const symbolLayerId = "symbols";
+  // layer properties
   const visibility = "visibility";
   const circleRadius = "circle-radius";
+  // Temporary key for access tilemap data
+  const key = "5bMoi6yhOerMe0pi7ctb";
   // I suspect that this is where I am presumably wrong.
   // I assume that 'maplibregl' type Map is the same as 'react-map-gl/maplibre' Map component ref={mapRef}
   // This is where I try to declare my mapRef following answer
@@ -46,37 +50,20 @@ export default function MapComponent() {
         zoom: initialZoom,
       });
     },
-    []
+    [],
   );
 
-  const handleVisibility = (layer_id: string, checked: boolean) => {
-    console.log(
-      'Trying to read layout visibility with getLayoutProperty("' +
-        layer_id +
-        '", "visibility"):',
-      mapRef.current?.getLayoutProperty(layer_id, visibility)
-    );
-
-    // fails with method not defined
-    // mapRef.current?.setPaintProperty(layer_id, "circle-radius", 0);
-    //fails with method not defined
-    mapRef.current?.setLayoutProperty(
-      layer_id,
-      visibility,
-      checked ? "visible" : "none"
-    );
+  const [circleLayerRadius, setCircleLayerRadius] = useState(12);
+  const [circleLayerVisibility, setCircleLayerVisibility] = useState("visible");
+  const [symbolLayerVisibility, setSymbolLayerVisibility] = useState("visible");
+  const handleCircleLayerRadius = (radius: number) => {
+    setCircleLayerRadius(radius);
   };
-
-  const handleRadius = (layer_id: string, radius: number) => {
-    console.log(
-      'Trying to read "circle-radius" with getLayoutProperty("' +
-        layer_id +
-        '", "circle-radius"):',
-      mapRef.current?.getPaintProperty(layer_id, circleRadius)
-    );
-
-    // fails with method not defined
-    mapRef.current?.setPaintProperty(layer_id, circleRadius, radius);
+  const handleCircleLayerVisibility = (checked: boolean) => {
+    setCircleLayerVisibility(checked ? "visible" : "none");
+  };
+  const handleSymbolLayerVisibility = (checked: boolean) => {
+    setSymbolLayerVisibility(checked ? "visible" : "none");
   };
 
   return (
@@ -116,7 +103,7 @@ export default function MapComponent() {
                 onClick={(e) => {
                   console.log(
                     "SO FAR, mapRef.current.getStyle():",
-                    mapRef.current?.getStyle()
+                    mapRef.current?.getStyle(),
                   );
                 }}
               >
@@ -130,7 +117,7 @@ export default function MapComponent() {
                 onClick={(e) => {
                   console.log(
                     'SO FAR, mapRef.current.getLayer("' + circleLayerId + '"):',
-                    mapRef.current?.getLayer(circleLayerId)
+                    mapRef.current?.getLayer(circleLayerId),
                   );
                 }}
               >
@@ -143,7 +130,9 @@ export default function MapComponent() {
             <span>
               <button
                 onClick={(e) => {
-                  handleVisibility(symbolLayerId, false);
+                  handleSymbolLayerVisibility(
+                    symbolLayerVisibility === "visible" ? false : true,
+                  );
                 }}
               >
                 Hide "Symbols" using visibility
@@ -154,7 +143,9 @@ export default function MapComponent() {
             <span>
               <button
                 onClick={(e) => {
-                  handleVisibility(circleLayerId, false);
+                  handleCircleLayerVisibility(
+                    circleLayerVisibility === "visible" ? false : true,
+                  );
                 }}
               >
                 Hide "Circles" using visibility
@@ -163,7 +154,11 @@ export default function MapComponent() {
           </li>
           <li>
             <span>
-              <button onClick={(e) => handleRadius(circleLayerId, 0)}>
+              <button
+                onClick={(e) =>
+                  handleCircleLayerRadius(circleLayerRadius == 12 ? 0 : 12)
+                }
+              >
                 Scale "Circles" radius to 0
               </button>
             </span>
@@ -177,7 +172,7 @@ export default function MapComponent() {
         ref={mapRef}
         style={{ width: "100vw", height: "100vh", display: "flex" }}
         mapStyle={
-          "https://api.maptiler.com/maps/basic-v2/style.json?key=zUpp6oZWatSi4rP4q5Cs"
+          "https://api.maptiler.com/maps/basic-v2/style.json?key=" + key
           // for some reason, the same layers that shows normaly with the above style, do not show up with demotiles
           // "https://demotiles.maplibre.org/style.json"
         }
@@ -201,12 +196,12 @@ export default function MapComponent() {
               type: "circle",
               paint: {
                 "circle-color": "#ff0000",
-                "circle-radius": 12,
-                "circle-stroke-width": 1,
+                "circle-radius": circleLayerRadius,
+                "circle-stroke-width": 0,
                 "circle-stroke-color": "#000",
               },
               layout: {
-                visibility: "visible",
+                visibility: circleLayerVisibility,
               },
             }}
           />
@@ -216,7 +211,7 @@ export default function MapComponent() {
               type: "symbol",
               source: sourceId,
               layout: {
-                visibility: "visible",
+                visibility: symbolLayerVisibility,
                 "text-allow-overlap": true,
                 "text-font": ["Arial Italic"],
                 "text-field": ["get", "mag"],
