@@ -50,7 +50,7 @@ export default function MapComponent() {
         zoom: initialZoom,
       });
     },
-    [],
+    []
   );
 
   const [circleLayerRadius, setCircleLayerRadius] = useState(12);
@@ -103,7 +103,7 @@ export default function MapComponent() {
                 onClick={(e) => {
                   console.log(
                     "SO FAR, mapRef.current.getStyle():",
-                    mapRef.current?.getStyle(),
+                    mapRef.current?.getStyle()
                   );
                 }}
               >
@@ -117,7 +117,7 @@ export default function MapComponent() {
                 onClick={(e) => {
                   console.log(
                     'SO FAR, mapRef.current.getLayer("' + circleLayerId + '"):',
-                    mapRef.current?.getLayer(circleLayerId),
+                    mapRef.current?.getLayer(circleLayerId)
                   );
                 }}
               >
@@ -131,7 +131,7 @@ export default function MapComponent() {
               <button
                 onClick={(e) => {
                   handleSymbolLayerVisibility(
-                    symbolLayerVisibility === "visible" ? false : true,
+                    symbolLayerVisibility === "visible" ? false : true
                   );
                 }}
               >
@@ -144,7 +144,7 @@ export default function MapComponent() {
               <button
                 onClick={(e) => {
                   handleCircleLayerVisibility(
-                    circleLayerVisibility === "visible" ? false : true,
+                    circleLayerVisibility === "visible" ? false : true
                   );
                 }}
               >
